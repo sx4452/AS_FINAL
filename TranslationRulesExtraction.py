@@ -3,7 +3,7 @@ __auther__ = 'ben'
 
 import time
 import codecs
-import string
+import copy
 
 def TranslationRuleExtr(testch, testen, testalign):
     lengthCH = len(testalign)
@@ -21,17 +21,17 @@ def TranslationRuleExtr(testch, testen, testalign):
                 Trans[strCH][strEN] += 1
             else:
                 Trans[strCH][strEN] = 1
-    Freq = Trans
+    Prob = copy.deepcopy(Trans)
     for strCH in Trans:
         allcnt = 0
         for strEN in Trans[strCH]:
             allcnt = allcnt + Trans[strCH][strEN]
-        for strEN in Freq[strCH]:
-            Freq[strCH][strEN] = float(Trans[strCH][strEN])/float(allcnt)
+        for strEN in Prob[strCH]:
+            Prob[strCH][strEN] = float(Trans[strCH][strEN])/float(allcnt)
     OutputStr = ''
-    for strCH in Freq:
-        for strEN in Freq[strCH]:
-            curStr = strCH + ' ||| '+ strEN + ' ||| ' + str(Freq[strCH][strEN])
+    for strCH in Prob:
+        for strEN in Prob[strCH]:
+            curStr = strCH + ' ||| '+ strEN + ' ||| ' + str(Trans[strCH][strEN]) + ' | ' + str(round(Prob[strCH][strEN], 2))
             OutputStr = OutputStr + curStr + '\r\n'
     return OutputStr
 
